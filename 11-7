@@ -44,3 +44,64 @@ class Solution {
         return dummy.next;
     }
 }
+
+
+
+
+// daily problem - reverse substring betweem each pair of paranthesis
+//medium
+
+class Solution {
+    public String reverseParentheses(String s) {
+        Stack<Character> stack=new Stack<>();
+        String ans="";
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)!=')'){
+                stack.push(s.charAt(i));
+            }else{
+                while(stack.peek()!='('){
+                ans+=stack.pop();
+                }
+                stack.pop();
+                // if(!stack.isEmpty()){
+                    for(int j=0;j<ans.length();j++){
+                        stack.push(ans.charAt(j));
+                    }
+                    ans="";
+                // }
+                
+            }
+        }
+        while(!stack.isEmpty()){
+            ans=stack.pop()+ans;
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+// que - remove duplicates from sorted list
+// easy
+
+class Solution {
+public ListNode deleteDuplicates(ListNode head) {
+ListNode current = head;
+
+    if(head==null){
+        return null;
+    }
+    
+    while(current.next!=null){
+        if(current.val==current.next.val){
+            current.next = current.next.next;
+            continue;
+        }
+        current = current.next;
+    }
+    
+    return head;
+}
+}
