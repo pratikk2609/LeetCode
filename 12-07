@@ -1,0 +1,69 @@
+// ADD TWO NUMBERS
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode L1, ListNode L2) {         
+        ListNode dummyHead = new ListNode(0);
+        ListNode current = dummyHead;
+        int carry = 0;
+
+        while (L1 != null || L2 != null || carry != 0) {
+            int x = (L1 != null) ? L1.val : 0;
+            int y = (L2 != null) ? L2.val : 0;
+            int sum = carry + x + y;
+            carry = sum / 10;
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+
+            if (L1 != null) L1 = L1.next;
+            if (L2 != null) L2 = L2.next;
+        }
+
+        return dummyHead.next;
+    }
+}
+
+
+
+// DAILY QUESTION 
+// Maximum Score From Removing Substrings
+
+
+class Solution {
+    String s;
+    
+    public int maximumGain(String str, int x, int y) {
+        int result = 0;
+        s = str;
+        
+        if(x > y) {
+            result += removePair(s, "ab", x);
+            result += removePair(s, "ba", y);
+        } else {
+            result += removePair(s, "ba", y);
+            result += removePair(s, "ab", x);            
+        }
+        
+        return result;
+    }
+    
+    public int removePair(String s, String pair, int gain) {
+        int score = 0;
+        
+        StringBuilder str = new StringBuilder();
+        int write = 0;
+        for(int i = 0; i < s.length(); i++) {
+            str.append(s.charAt(i));
+            write++;
+            
+            if(write > 1 && str.charAt(write - 2) == pair.charAt(0) && str.charAt(write - 1) == pair.charAt(1)) {
+                score += gain;
+                str.deleteCharAt(write - 1);
+                str.deleteCharAt(write - 2);
+                write -= 2;
+            }
+        }
+        this.s = str.toString();
+        
+        return score;
+}
+}
