@@ -1,0 +1,107 @@
+// DAILY PROBLEM - ROBOT COLLISION
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
+        int n = positions.length;
+        List<Integer> ind = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            ind.add(i);
+        }
+        Collections.sort(ind, (x, y) -> Integer.compare(positions[x], positions[y]));
+        Stack<Integer> s = new Stack<>();
+        for (int x : ind) {
+            if (directions.charAt(x) == 'L') {
+                while (!s.empty()) {
+                    int y = s.peek();
+                    if (healths[x] == healths[y]) {
+                        healths[x] = 0;
+                        healths[y] = 0;
+                        s.pop();
+                        break;
+                    }
+                    if (healths[x] > healths[y]) {
+                        healths[x]--;
+                        healths[y] = 0;
+                        s.pop();
+                    } else {
+                        healths[x] = 0;
+                        healths[y]--;
+                        break;
+                    }
+                }  
+            } else {
+                s.push(x);
+            }
+        }
+        List<Integer> result = new ArrayList<>();
+        for (int x : healths) {
+            if (x != 0) {
+                result.add(x);
+            }
+        }
+        return result;
+    }
+}
+
+
+// GROUP ANAGRAMS
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        
+        for (String word : strs) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedWord = new String(chars);
+            
+            if (!map.containsKey(sortedWord)) {
+                map.put(sortedWord, new ArrayList<>());
+            }
+            
+            map.get(sortedWord).add(word);
+        }
+        
+        return new ArrayList<>(map.values());
+    }
+}
+
+
+// WORD SEARCH
+
+public class Solution {
+    public boolean exist(char[][] board, String word) {
+        int rows = board.length;
+        int cols = board[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (dfs(board, word, i, j, 0, visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(char[][] board, String word, int i, int j, int index, boolean[][] visited) {
+        if (index == word.length()) {
+            return true;
+        }
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word.charAt(index) || visited[i][j]) {
+            return false;
+        }
+
+        visited[i][j] = true;
+        boolean found = dfs(board, word, i + 1, j, index + 1, visited) ||
+                        dfs(board, word, i - 1, j, index + 1, visited) ||
+                        dfs(board, word, i, j + 1, index + 1, visited) ||
+                        dfs(board, word, i, j - 1, index + 1, visited);
+        visited[i][j] = false;
+
+        return found;
+    }
+}
