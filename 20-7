@@ -1,0 +1,63 @@
+// daily question - Find Valid Matrix Given Row and Column Sums
+class Solution {
+    public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
+        int rows = rowSum.length;
+        int cols = colSum.length;
+        int[][] resultMatrix = new int[rows][cols];
+        
+        int r = 0, c = 0;
+        while (r < rows && c < cols) {
+            int cellValue = Math.min(rowSum[r], colSum[c]);
+            resultMatrix[r][c] = cellValue;
+            
+            rowSum[r] -= cellValue;
+            colSum[c] -= cellValue;
+            
+            if (rowSum[r] == 0) r++;
+            else c++;
+        }
+        
+        return resultMatrix;
+    }
+}
+
+// reorder list
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){ //half the LL
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode temp = slow.next;
+        slow.next = null;
+        ListNode prev = null; 
+
+        while(temp != null){ //reverse second half
+             ListNode n = temp.next;
+             temp.next = prev;
+             prev = temp;
+             temp = n;
+        }
+        ListNode curr = head;
+        while(prev != null){
+            ListNode n = curr.next;
+            curr.next = prev;
+            prev = prev.next;
+            curr.next.next = n;
+            curr = n;
+        }
+    }
+}
